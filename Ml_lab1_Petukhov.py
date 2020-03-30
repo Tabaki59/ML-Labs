@@ -7,6 +7,7 @@ Created on Sun Feb  2 22:04:20 2020
 # Задание 1
 import pandas as pd
 
+# Задание 1 импортируем файлы
 transact = pd.read_csv(r"G:\Учебка\Машинка\resto-asap2018\casc-resto-small.csv", sep = ",")
 print(transact)
 print(transact.describe())
@@ -16,29 +17,35 @@ print(customers)
 print(customers.describe())
 
 # Задача 2 
-transact.RKDate = pd.to_datetime(transact.RKDate)
+transact.RKDate = pd.to_datetime(transact.RKDate) # Преобразуем дату из строки в ДАТУ
 print(type(transact.RKDate[0]))
-transact = transact.sort_values("RKDate")
+transact = transact.sort_values("RKDate") # Сортируем, пусть будет
 print(transact.tail())
 
-transact["visithappen"] = transact['RKDate'].between('2017-07-01','2017-12-31', inclusive=True)  
-transact_unic_id = transact.groupby('CustomerID')
+transact["visithappen"] = transact['RKDate'].between('2017-07-01','2017-12-31', inclusive=True)  # Добавляем предсказываемую переменную был ли визит
+transact_unic_id = transact.groupby('CustomerID') # Группируем по id клиента
 
 # Тестирую как играться с Groupby
 print(transact_unic_id.first())
 print(transact_unic_id.get_group(2728549)) 
 
+
+# Функция для рассчета Recency
 def get_recency(obj, cust_id):
     #    Вот вообще не понимаю что тут считать есть только идея дата из задачи - дата первого визита но это просто потолок
     print(obj.RKDate)
     print('Да ты меня вызвал')
     
+    
+# Функция для рассчета Frequency    
 def get_frequency(obj, cust_id):
     # Считаем среднее количество визитов в месяц дату 2017 07 01 - дата первого визита смотрим на разницу в месяцах
     # Делим количество визитов на разницу в месяцах
     # return количество
     pass
 
+
+# Функция для рассчета Monetary Value 
 def get_monetary_value(obj, cust_id):
     # средний чек клиента по всем покупкам до 2017-07-01
     pass
