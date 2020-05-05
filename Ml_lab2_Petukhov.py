@@ -65,10 +65,12 @@ models = [DecisionTreeClassifier(criterion = 'entropy'), # Дерево реше
           GradientBoostingClassifier(), # Гралиентный бустинг
 	     ]
 
+colors = ('b','y','g')
 
 # создаем коллекции
 Result = DataFrame() 
 tmp = {}
+i = 0
 
 # Пошли по моделям
 for model in models:
@@ -79,19 +81,18 @@ for model in models:
    model.fit(Xtrn,Ytrn)
    Ypred = model.predict(Xtest)
    type(Ypred)
-   # вычисляем коэффициент детерминации
+   # Метрки там вся фигня
    tmp['Оценка модели'] = classification_report(Ytest, Ypred)
    # ROC криывые
    fpr, tpr, threshold = metrics.roc_curve(Ytest, Ypred)
    roc_auc = metrics.auc(fpr, tpr)
-   plt.plot(fpr, tpr, 'b', label = m[:m.index('(')] + 'AUC = %0.2f' % roc_auc)
+   plt.plot(fpr, tpr, str(colors[i]), label = m[:m.index('(')] + 'AUC = %0.2f' % roc_auc)
    plt.legend(loc = 'lower right')
    plt.plot([0, 1], [0, 1],'r--')
    plt.xlim([0, 1])
    plt.ylim([0, 1])
-   plt.ylabel('True Positive Rate')
-   plt.xlabel('False Positive Rate')
    # записываем данные и итоговый DataFrame
    Result = Result.append([tmp])
+   i += 1
 Result.set_index('Модель', inplace=True)
 plt.show()
